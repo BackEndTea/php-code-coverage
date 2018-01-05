@@ -202,6 +202,16 @@ class CodeCoverageTest extends TestCase
         );
     }
 
+    public function testSetIgnoreCoversAnnotation()
+    {
+        $this->coverage->setIgnoreCoversAnnotation(true);
+        $this->assertAttributeEquals(
+            true,
+            'ignoreCoversAnnotation',
+            $this->coverage
+        );
+    }
+
     /**
      * @expectedException SebastianBergmann\CodeCoverage\Exception
      */

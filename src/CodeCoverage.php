@@ -59,6 +59,11 @@ class CodeCoverage
     /**
      * @var bool
      */
+    private $ignoreCoversAnnotation = false;
+
+    /**
+     * @var bool
+     */
     private $checkForUnexecutedCoveredCode = false;
 
     /**
@@ -500,6 +505,23 @@ class CodeCoverage
      *
      * @throws InvalidArgumentException
      */
+    public function setIgnoreCoversAnnotation($flag)
+    {
+        if (!\is_bool($flag)) {
+            throw InvalidArgumentException::create(
+                1,
+                'boolean'
+            );
+        }
+
+        $this->ignoreCoversAnnotation = $flag;
+    }
+
+    /**
+     * @param bool $flag
+     *
+     * @throws InvalidArgumentException
+     */
     public function setCheckForMissingCoversAnnotation($flag)
     {
         if (!\is_bool($flag)) {
@@ -631,6 +653,10 @@ class CodeCoverage
      */
     private function applyCoversAnnotationFilter(array &$data, $linesToBeCovered, array $linesToBeUsed, $ignoreForceCoversAnnotation)
     {
+        if ($this->ignoreCoversAnnotation) {
+            return;
+        }
+
         if ($linesToBeCovered === false ||
             ($this->forceCoversAnnotation && empty($linesToBeCovered) && !$ignoreForceCoversAnnotation)) {
             if ($this->checkForMissingCoversAnnotation) {
